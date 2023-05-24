@@ -38,14 +38,7 @@ export class ImageComponent implements OnInit {
     upload() {
         const data = this.form.value
         console.info(data)
-        firstValueFrom(this.imageService.upload(data['comments'], this.imageFile))
-        .then(result => {
-            alert('uploaded')
-            this.form.reset()
-          })
-          .catch(err => {
-            alert(JSON.stringify(err))
-          })
+        this.imageService.upload(data['comments'], this.imageFile).subscribe()
         
     }
 
