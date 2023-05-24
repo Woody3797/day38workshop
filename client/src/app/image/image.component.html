@@ -1,0 +1,19 @@
+<h2 [routerLink]="['/']">Upload</h2>
+<form [formGroup]="form" (submit)="upload()">
+<div>
+    <div>
+        <img [src]="image" alt="" #imageFile>
+    </div>
+</div>
+<div>
+    Comments:
+    <br>
+    <textarea name="comments" id="comments" cols="30" rows="10" formControlName="comments"></textarea>
+</div>
+<div>
+    <div>
+        <button type="button" [routerLink]="[ '/' ]">Back</button>
+        <button type="submit" [disabled]="form.invalid">Upload</button>
+    </div>
+</div>
+</form>
