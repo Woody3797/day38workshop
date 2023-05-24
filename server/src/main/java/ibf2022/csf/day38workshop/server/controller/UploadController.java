@@ -26,16 +26,14 @@ public class UploadController {
     @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public ResponseEntity<String> upload(@RequestPart String comments, @RequestPart MultipartFile imageFile) {
-
-        System.out.printf(">>> title: %s\n", comments);
-		System.out.printf(">>> filename: %s\n", imageFile.getOriginalFilename());
         
         try {
             URL url = spacesRepository.upload(comments, imageFile);
+            System.out.println(url.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         return ResponseEntity.ok("{}");
     }
 
