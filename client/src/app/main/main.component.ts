@@ -15,7 +15,6 @@ export class MainComponent implements OnInit {
     image!: WebcamImage
     mirrorImage!: string
     height!: number
-    width!: number
 
     router = inject(Router)
     imageService = inject(ImageService)
@@ -23,8 +22,7 @@ export class MainComponent implements OnInit {
     ngOnInit(): void {
         this.trigger$ = new Subject<void>
         this.mirrorImage = 'never'
-        this.height = 400
-        this.width = 400
+        this.height = 500
     }
 
     captureImage(image: WebcamImage) {
@@ -35,6 +33,6 @@ export class MainComponent implements OnInit {
 
     takeSnap() {
         this.trigger$.next()
-        this.router.navigate([ '/upload'])
+        this.router.navigate([ '/upload' ])
     }
 }

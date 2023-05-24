@@ -1,6 +1,6 @@
 <h2 [routerLink]="['/']">Main</h2>
-<div style="border: solid orange; display: block;">
-<webcam [trigger]="trigger$" [mirrorImage]="mirrorImage" (imageCapture)="captureImage($event)" [height]="height" [width]="width"></webcam>
-<br>
-<button type="button" (click)="takeSnap()">SNAP!</button>
+<div style="border: solid darkgreen; display: block;">
+    <webcam [trigger]="trigger$" [mirrorImage]="mirrorImage" (imageCapture)="captureImage($event)" [height]="height"></webcam>
+    <br>
+    <button type="button" (click)="takeSnap()">SNAP!</button>
 </div>

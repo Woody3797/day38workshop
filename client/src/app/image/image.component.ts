@@ -38,8 +38,9 @@ export class ImageComponent implements OnInit {
     upload() {
         const data = this.form.value
         console.info(data)
+        // Must subscribe if using Observable, while a Promise will always execute
         this.imageService.upload(data['comments'], this.imageFile).subscribe()
-        
+        this.router.navigate([ '/' ])
     }
 
 

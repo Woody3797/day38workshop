@@ -29,7 +29,7 @@ public class UploadController {
         
         try {
             URL url = spacesRepository.upload(comments, imageFile);
-            System.out.println(url.toString());
+            System.out.println("URL: " + url.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

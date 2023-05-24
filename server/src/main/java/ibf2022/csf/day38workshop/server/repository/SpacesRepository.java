@@ -24,11 +24,16 @@ public class SpacesRepository {
     private AmazonS3 s3;
 
     public URL upload(String comments, MultipartFile imageFile) throws IOException {
+
+        // Generate a random filename and add extension
+        String key = UUID.randomUUID().toString().substring(0, 8);
+        String extension = "." + imageFile.getContentType().substring(6);
+
         // Add custom metadata
         Map<String, String> userData = new HashMap<>();
         userData.put("comments", comments);
-        userData.put("filename", imageFile.getOriginalFilename());
-        userData.put("uploadDate", LocalDate.now().toString());
+        userData.put("filename", key);
+        userData.put("upload-date", LocalDate.now().toString());
 
         // Add object's metadata
         ObjectMetadata metadata = new ObjectMetadata();
@@ -36,14 +41,11 @@ public class SpacesRepository {
         metadata.setContentLength(imageFile.getSize());
         metadata.setUserMetadata(userData);
 
-        // Generate a random filename
-        String key = UUID.randomUUID().toString().substring(0, 8);
-
         // woodybucket - bucket name
         // key - key
         // file.getInputStream() - actual bytes
         // metadata
-        PutObjectRequest putReq = new PutObjectRequest("woodybucket", key, imageFile.getInputStream(), metadata);
+        PutObjectRequest putReq = new PutObjectRequest("woodybucket", key+extension, imageFile.getInputStream(), metadata);
 
         // Make the file publically accessible
         putReq = putReq.withCannedAcl(CannedAccessControlList.PublicRead);
