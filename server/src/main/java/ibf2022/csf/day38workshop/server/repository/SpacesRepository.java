@@ -27,6 +27,7 @@ public class SpacesRepository {
 
         // Generate a random filename and add extension
         String key = UUID.randomUUID().toString().substring(0, 8);
+        @SuppressWarnings("null")
         String extension = "." + imageFile.getContentType().substring(6);
 
         // Add custom metadata
