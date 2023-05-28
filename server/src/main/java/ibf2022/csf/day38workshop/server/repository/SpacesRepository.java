@@ -3,8 +3,10 @@ package ibf2022.csf.day38workshop.server.repository;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -20,11 +22,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 
 import jakarta.json.Json;
 
@@ -89,22 +94,20 @@ public class SpacesRepository {
     // Get image from S3
     public ResponseEntity<String> getImage(String key) {
         GetObjectRequest getReq = new GetObjectRequest("woodybucket", key);
-        S3Object result = s3.getObject(getReq);
-        ObjectMetadata metadata = result.getObjectMetadata();
+        S3Object s3Object = s3.getObject(getReq);
+        ObjectMetadata metadata = s3Object.getObjectMetadata();
         String contentType = metadata.getContentType();
         Map<String, String> userdata = metadata.getUserMetadata();
-        System.out.println(userdata.toString());
-        S3ObjectInputStream is = result.getObjectContent();
-        byte[] picture;
+        S3ObjectInputStream is = s3Object.getObjectContent();
         try {
-            picture = is.readAllBytes();
+            byte[] picture = is.readAllBytes();
             StringBuilder sb = new StringBuilder();
             String encoded = Base64.getEncoder().encodeToString(picture);
             String imageData = sb.append("data:").append(contentType).append(";base64,").append(encoded).toString();
 
             return ResponseEntity.status(HttpStatus.OK)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("X-name", userdata.get("filename"))
+                        .header("x-amz-meta-Filename", userdata.get("filename"))
                         .body(Json.createObjectBuilder()
                         .add("image", imageData)
                         .build().toString());
@@ -112,6 +115,24 @@ public class SpacesRepository {
             e.printStackTrace();
             return ResponseEntity.notFound().build();
         }
+    }
+
+    // Get list of files from S3
+    public List<String> getFilesFromS3() {
+        ListObjectsRequest listObjectsRequest = new ListObjectsRequest().withBucketName("woodybucket");
+        List<String> keys = new ArrayList<>();
+        ObjectListing objects = s3.listObjects(listObjectsRequest);
+
+        List<S3ObjectSummary> objectSummaries = objects.getObjectSummaries();
+
+        for (S3ObjectSummary obj : objectSummaries) {
+            if (!obj.getKey().endsWith("/")) {
+                keys.add(obj.getKey());
+            }
+        }
+        objects = s3.listNextBatchOfObjects(objects);
+        System.out.println(keys.toString());
+        return keys;
     }
 
 }

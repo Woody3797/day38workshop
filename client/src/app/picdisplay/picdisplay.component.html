@@ -1,7 +1,22 @@
 <h2>Pictures</h2>
 
+<div *ngFor="let item of files">
+    Files: <button (click)="selectImage(item)"> {{ item }} </button>
+</div>
+<br>
 <div *ngIf="image; else noImage">
-    <img [src]="getImage()" alt="">
+    <img [src]="image" alt="" height="200px">
+</div>
+<br>
+<div *ngIf="postSub$" style="font-size: large;">
+    Comments: {{ comments }}
+    <br>
+    Likes: {{ likes }} | Dislikes: {{ dislikes }}
+</div>
+
+<div>
+    <button type="button" (click)="updateLikes(1)">Like</button>
+    <button type="button" (click)="updateLikes(-1)">Dislike</button>
 </div>
 
 <ng-template #noImage>no image</ng-template>

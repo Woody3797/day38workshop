@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable, OnInit, inject } from "@angular/core";
 import { Observable } from "rxjs";
-import { ImageDataAsString } from "./model";
+import { ImageDataAsString, Post, S3FilesList } from "./model";
 
 const URL = '/image'
 
@@ -27,8 +27,9 @@ export class ImageService implements OnInit {
         return this.http.post('http://localhost:8080/upload', fdata)
     }
 
-    updateLikes(likes: number, dislikes: number): Observable<any> {
+    updateLikes(key: string, likes: number, dislikes: number): Observable<any> {
         const likesCount = new FormData
+        likesCount.set('key', key)
         likesCount.set('likes', likes.toString())
         likesCount.set('dislikes', dislikes.toString())
 
@@ -40,8 +41,12 @@ export class ImageService implements OnInit {
         return this.http.get<ImageDataAsString>('http://localhost:8080/getimage', {params})
     }
 
-    // getLikes(imageKey: string): Observable<any> {
-    //     const params = new HttpParams().set('key', imageKey)
-    //     return this.http.get('http://localhost:8080/getlikes', {params})
-    // }
+    getPostDetails(key: string): Observable<Post> {
+        const params = new HttpParams().set('key', key)
+        return this.http.get<Post>('http://localhost:8080/getdetails', {params})
+    }
+
+    getFilesFromS3(): Observable<S3FilesList> {
+        return this.http.get<S3FilesList>('http://localhost:8080/getfiles')
+    }
 }

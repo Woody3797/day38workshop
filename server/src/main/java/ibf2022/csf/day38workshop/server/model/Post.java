@@ -8,7 +8,6 @@ public class Post {
     String comments;
     Integer likes;
     Integer dislikes;
-    String image64;
     
     public String getComments() {
         return comments;
@@ -28,12 +27,6 @@ public class Post {
     public void setDislikes(Integer dislikes) {
         this.dislikes = dislikes;
     }
-    public String getImage64() {
-        return image64;
-    }
-    public void setImage64(String image64) {
-        this.image64 = image64;
-    }
 
     public Post() {
     }
@@ -42,13 +35,11 @@ public class Post {
         this.comments = comments;
         this.likes = likes;
         this.dislikes = dislikes;
-        this.image64 = image64;
     }
 
     public JsonObject toJson() {
         return Json.createObjectBuilder()
         .add("comments", comments)
-        .add("image", image64)
         .add("likes", likes)
         .add("dislikes", dislikes)
         .build();

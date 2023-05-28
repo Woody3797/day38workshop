@@ -48,9 +48,8 @@ public class UploadController {
     }
 
     @PostMapping(path = "/updatelikes")
-    public ResponseEntity<String> updateLikes(@RequestPart String likes, @RequestPart String dislikes) {
-        System.out.println(likes + dislikes);
-        uploadService.updateLikes(Integer.parseInt(likes), Integer.parseInt(dislikes));
+    public ResponseEntity<String> updateLikes(@RequestPart String key, @RequestPart String likes, @RequestPart String dislikes) {
+        uploadService.updateLikes(key, Integer.parseInt(likes), Integer.parseInt(dislikes));
 
         JsonObject jo = Json.createObjectBuilder()
         .add("likes", likes)
@@ -66,15 +65,17 @@ public class UploadController {
         return uploadService.getImage(key);
     }
 
-    @GetMapping(path = "/getlikes")
+    @GetMapping(path = "/getdetails")
     @ResponseBody
     public ResponseEntity<String> getLikes(@RequestParam String key) {
-        Post post = uploadService.getPost(key);
-        if (post != null) {
-            return ResponseEntity.ok().body(post.toJson().toString());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        Post post = uploadService.getPostDetails(key);
+        return ResponseEntity.ok().body(post.toJson().toString());
+    }
+
+    @GetMapping(path = "/getfiles")
+    @ResponseBody
+    public ResponseEntity<String> getAllFilesFromS3() {
+        return uploadService.getFilesFromS3();
     }
 
 }

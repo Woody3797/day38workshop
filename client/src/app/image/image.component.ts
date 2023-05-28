@@ -32,8 +32,6 @@ export class ImageComponent implements OnInit {
         this.form = this.fb.group({
             imageFile: this.fb.control<File | null>(this.imageFile, [ Validators.required ]),
             comments: this.fb.control<string>('', [ Validators.required ]),
-            likes: this.fb.control<number>(0, [ Validators.min(0)]),
-            dislikes: this.fb.control<number>(0, [Validators.max(0)])
         })
     }
 
@@ -44,15 +42,6 @@ export class ImageComponent implements OnInit {
         this.imageService.upload(data['comments'], this.imageFile).subscribe()
         this.router.navigate([ '/' ])
     }
-
-    updateLikes(value: number) {
-        if (value == 1) {
-            this.imageService.updateLikes(1, 0).subscribe()
-        } else {
-            this.imageService.updateLikes(0, 1).subscribe()
-        }
-    }
-
 
     dataURLtoFile(dataurl: string, filename: string) {
         var arr = dataurl.split(','),
