@@ -9,10 +9,12 @@ import {WebcamModule} from 'ngx-webcam';
 import { MainComponent } from './main/main.component';
 import { ImageComponent } from './image/image.component';
 import { ImageService } from './image.service';
+import { PicdisplayComponent } from './picdisplay/picdisplay.component';
 
 const appRoutes: Routes = [
     { path: '', component: MainComponent, title: 'Webcam' },
     { path: 'upload', component: ImageComponent, title: 'Upload' },
+    { path: 'picdisplay', component: PicdisplayComponent, title: 'Pics' },
     { path: '**', redirectTo: '/', pathMatch: 'full' },
 ]
 
@@ -20,7 +22,8 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     MainComponent,
-    ImageComponent
+    ImageComponent,
+    PicdisplayComponent
   ],
   imports: [
     BrowserModule,

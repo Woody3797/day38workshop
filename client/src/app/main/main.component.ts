@@ -29,6 +29,7 @@ export class MainComponent implements OnInit {
         this.image = image
         this.imageService.image = image.imageAsDataUrl
         this.imageService.contentType = image['_mimeType']
+        console.log(this.imageService.contentType)
     }
 
     takeSnap() {
