@@ -31,10 +31,6 @@ export class PicdisplayComponent implements OnInit, OnDestroy {
             this.files = data.files
             console.info(this.files)
         })
-
-        
-
-        
     }
 
     ngOnDestroy(): void {
@@ -59,17 +55,25 @@ export class PicdisplayComponent implements OnInit, OnDestroy {
     selectImage(value: any) {
         console.info(value)
         this.key = value
-        this.imageSub$ = this.imageService.getImage(this.key).subscribe((data: ImageDataAsString) => {
+        this.imageSub$ = this.imageService.getImage(this.key).subscribe(data => {
             this.image = data.image
             console.info(data)
         })
-
-        this.imageService.updateLikes(this.key, 0, 0)
 
         this.postSub$ = this.imageService.getPostDetails(this.key).subscribe(data => {
             this.comments = data.comments
             this.likes = data.likes
             this.dislikes = data.dislikes
         })
+    }
+
+    resetLikes() {
+        var resetSub = this.imageService.updateLikes(this.key, 0, 0).subscribe(data => {
+            this.likes = data.likes
+            this.dislikes = data.dislikes
+        })
+        setTimeout(() => {
+            resetSub.unsubscribe()
+        }, 1000);
     }
 }

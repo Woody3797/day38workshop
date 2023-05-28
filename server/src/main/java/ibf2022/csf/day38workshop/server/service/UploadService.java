@@ -26,7 +26,6 @@ public class UploadService {
     private SpacesRepository spacesRepository;
 
     public void upload(String comments, MultipartFile imageFile) throws IOException {
-
         postRepository.uploadPostToMongo(comments, imageFile);
 
         spacesRepository.upload(imageFile);

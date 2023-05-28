@@ -131,7 +131,6 @@ public class SpacesRepository {
             }
         }
         objects = s3.listNextBatchOfObjects(objects);
-        System.out.println(keys.toString());
         return keys;
     }
 

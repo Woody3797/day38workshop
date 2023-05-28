@@ -26,20 +26,25 @@ public class PostRepository {
     public void uploadPostToMongo(String comments, MultipartFile imageFile) throws IOException {
         Query query = new Query(Criteria.where("_id").is(SpacesRepository.key));
         Update update = new Update().set("_id", SpacesRepository.key).set("comments", comments).set("image", imageFile.getBytes());
-
+        updateLikes(SpacesRepository.key, 0, 0);
         mongoTemplate.upsert(query, update, "posts");
     }
 
     public String updateLikes(String key, int likes, int dislikes) {
+        if (likes == 0 && dislikes == 0) {
+            redisTemplate.opsForHash().put(key, "likes", String.valueOf(0));
+            redisTemplate.opsForHash().put(key, "dislikes", String.valueOf(0));
+        }
         Long post = redisTemplate.opsForHash().size(key);
         if (post == 0) {
             redisTemplate.opsForHash().put(key, "likes", String.valueOf(0));
             redisTemplate.opsForHash().put(key, "dislikes", String.valueOf(0));
             System.out.println(">>>>>>>>>>>>>>>>>>>>>> key "+ key);
-        } else {
+        } else if (post > 0) {
             redisTemplate.opsForHash().increment(key, "likes", likes);
             redisTemplate.opsForHash().increment(key, "dislikes", dislikes);
         }
+        
         return key;
     }
 

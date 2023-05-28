@@ -1,7 +1,7 @@
 <h2>Pictures</h2>
-
-<div *ngFor="let item of files">
-    Files: <button (click)="selectImage(item)"> {{ item }} </button>
+Files:
+<div *ngFor="let item of files" style="display: inline-flex;">
+    <button (click)="selectImage(item)"> {{ item }} </button>
 </div>
 <br>
 <div *ngIf="image; else noImage">
@@ -17,6 +17,7 @@
 <div>
     <button type="button" (click)="updateLikes(1)">Like</button>
     <button type="button" (click)="updateLikes(-1)">Dislike</button>
+    <button type="button" (click)="resetLikes()">Reset likes and dislikes</button>
 </div>
 
 <ng-template #noImage>no image</ng-template>
