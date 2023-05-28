@@ -29,7 +29,6 @@ export class PicdisplayComponent implements OnInit, OnDestroy {
         this.files$ = this.imageService.getFilesFromS3()
         this.filesSub$ = this.files$.subscribe(data => {
             this.files = data.files
-            console.info(this.files)
         })
     }
 
@@ -53,11 +52,9 @@ export class PicdisplayComponent implements OnInit, OnDestroy {
     }
 
     selectImage(value: any) {
-        console.info(value)
         this.key = value
         this.imageSub$ = this.imageService.getImage(this.key).subscribe(data => {
             this.image = data.image
-            console.info(data)
         })
 
         this.postSub$ = this.imageService.getPostDetails(this.key).subscribe(data => {
