@@ -122,7 +122,6 @@ public class SpacesRepository {
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest().withBucketName("woodybucket");
         List<String> keys = new ArrayList<>();
         ObjectListing objects = s3.listObjects(listObjectsRequest);
-
         List<S3ObjectSummary> objectSummaries = objects.getObjectSummaries();
 
         for (S3ObjectSummary obj : objectSummaries) {
