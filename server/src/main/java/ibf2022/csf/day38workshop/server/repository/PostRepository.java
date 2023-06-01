@@ -56,8 +56,8 @@ public class PostRepository {
 
         Query query = new Query(Criteria.where("_id").is(key));
         Document doc = mongoTemplate.findOne(query, Document.class, "posts");
-        post.setLikes(likes);
-        post.setDislikes(dislikes);
+        post.setLikes(likes == null ? 0 : likes);
+        post.setDislikes(dislikes == null ? 0 : dislikes);
         try {
             post.setComments(doc.getString("comments"));
         } catch (NullPointerException e) {
